@@ -2,5 +2,5 @@ from django.apps import AppConfig
 
 
 class AlwayssunriseappConfig(AppConfig):
-    default_auto_field = 'django.db.models.BigAutoField'
-    name = 'alwayssunriseapp'
+    default_auto_field = "django.db.models.BigAutoField"
+    name = "alwayssunriseapp"
