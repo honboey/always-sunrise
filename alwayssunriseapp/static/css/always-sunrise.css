@@ -1,0 +1,145 @@
+@font-face {
+  font-family: "Calibre";
+  src: url("../fonts/calibre-test-regular.woff") format("woff");
+  font-weight: 400; 
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Calibre";
+  src: url("../fonts/calibre-test-medium.woff") format("woff");
+  font-weight: 500; 
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Variables */
+
+:root {
+  --black: black;
+}
+
+body {
+  display: grid;
+  grid-template-columns: repeat(26, 1fr);
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+  font-family: "Calibre", Arial, Helvetica, sans-serif;
+  font-size: 1.25rem;
+  font-weight: 400;
+  background-image: url("../images/sunrise-bg.jpg");
+  background-size: cover;
+}
+
+/* Type */
+
+h1 {
+  margin: 0 0 1rem 0;
+  font-size: inherit;
+  font-weight: 500;
+}
+
+h2 {
+  margin: 0 0 1rem 0;
+  font-size: inherit;
+  font-weight: 500;
+}
+
+p {
+  margin: 0;
+}
+
+p + p {
+  margin-top: 1rem;
+}
+
+a {
+  color: var(--black);
+}
+
+/* General layout */
+
+header {
+  display: grid;
+  grid-template-columns: subgrid;
+  grid-column: 2/26;
+}
+
+.masthead {
+  grid-column: 1/13;
+}
+
+.logo {
+  display: inline-block;
+  margin-right: 0.5rem;
+}
+
+.livestream-info__container {
+  display: grid;
+  grid-column: 17/25;
+  grid-template-columns: subgrid;
+  margin-bottom: 3rem;
+}
+
+.livestream-location {
+  grid-column: 1/9;
+}
+
+.livestream-info__definition-list {
+  display: grid;
+  grid-template-columns: subgrid;
+  grid-column: 1/9;
+  margin: 0 0 1rem 0;
+}
+
+.livestream-info__definition-term {
+  grid-column: 1/5;
+}
+
+.livestream-info__definition-description {
+  grid-column: 6/10;
+  margin: 0;
+}
+
+.change-location-button {
+  grid-column: 1/10;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  border: solid 1px var(--black);
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.change-location-button:hover {
+  background-color: rgb(243, 165, 253);
+  transition: background-color 0.3s ease;
+  border-color: rgb(243, 165, 253);
+}
+
+main {
+  grid-column: 2/26;
+  margin-bottom: 3rem;
+}
+
+.livestream-iframe {
+  width: 100%;
+  aspect-ratio: 16/9;
+}
+
+footer {
+  grid-column: 17/25;
+}
+
+.colophon__link-list {
+  list-style: none;
+  padding: 0;
+}
+
+.colophon__link-list-item {
+  display: inline-block;
+}
+
+.colophon__link-list-item + .colophon__link-list-item {
+  margin-left: 0.35rem;
+}
