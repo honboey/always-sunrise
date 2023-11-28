@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Always Sunrise – Livestream list</title>
+</head>
+<body>
+  <h1>Livestream List</h1>
+  <ul>
+    {% for livestream in livestreams %}
+      <li>
+        <h2>{{ livestream }}</h2>
+        <p>{{ livestream.local_sunrise_time }}</p>
+      </li>
+    {% endfor %}
+  </ul>
+</body>
+</html>
