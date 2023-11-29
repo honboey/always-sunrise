@@ -7,69 +7,52 @@ from datetime import datetime, timedelta
 
 
 class Command(BaseCommand):
-    help = "Testing a command"
+    help = "Call sunrise API and get sunrise times for Livestream"
 
     def handle(self, *args, **options):
         livestreams = Livestream.objects.all()
 
-        for livestream in livestreams:
-            # Today's sunrise information
-
-            sunrise_response_today = requests.get(
-                f"https://api.sunrisesunset.io/json?lat={livestream.latitude}&lng={livestream.longitude}&date=today"
+        def get_sunrise_time(day, livestream):
+            """
+            Given a day and Livestream model, update the Livestream model with the sunrise time for that day
+            """
+            response = requests.get(
+                f"https://api.sunrisesunset.io/json?lat={livestream.latitude}&lng={livestream.longitude}&date={day}"
             )
-            if sunrise_response_today.status_code == 200:
+            if response.status_code == 200:
                 # Convert received time to naive datetime.time object
-                sunrise_time_today = datetime.strptime(
-                    sunrise_response_today.json()["results"]["sunrise"], "%I:%M:%S %p"
+                sunrise_time = datetime.strptime(
+                    response.json()["results"]["sunrise"], "%I:%M:%S %p"
                 ).time()
 
                 # Get timezone and convert to pytz.timezone object
-                local_timezone = pytz.timezone(
-                    sunrise_response_today.json()["results"]["timezone"]
-                )
+                local_timezone = pytz.timezone(response.json()["results"]["timezone"])
 
-                # Get today's date and convert to datetime.date
-                today_date = datetime.now().date()
+                # Get day's date and convert to datetime.date
+                if day == "today":
+                    date = datetime.now().date()
+                elif day == "tomorrow":
+                    date = datetime.now().date() + timedelta(days=1)
 
                 # Combine time and date to create a naive datetime.datetime object
-                naive_local_sunrise_time_today = datetime.combine(
-                    today_date, sunrise_time_today
-                )
+                naive_sunrise_datetime = datetime.combine(date, sunrise_time)
 
                 # Convert to aware datetime.datetime object and save to model
-                livestream.sunrise_time_today = local_timezone.localize(naive_local_sunrise_time_today)
-
+                if day == "today":
+                    livestream.sunrise_time_today = local_timezone.localize(
+                        naive_sunrise_datetime
+                    )
+                elif day == "tomorrow":
+                    livestream.sunrise_time_tomorrow = local_timezone.localize(
+                        naive_sunrise_datetime
+                    )
 
                 # Add timezone to model
-                livestream.timezone = sunrise_response_today.json()["results"][
-                    "timezone"
-                ]
+                livestream.timezone = response.json()["results"]["timezone"]
 
-            # Tomorrow's sunrise information
+                livestream.save()
+                print(livestream, sunrise_time, day, livestream.timezone)
 
-            sunrise_response_tomorrow = requests.get(
-                f"https://api.sunrisesunset.io/json?lat={livestream.latitude}&lng={livestream.longitude}&date=tomorrow"
-            )
-            if sunrise_response_tomorrow.status_code == 200:
-                # Convert received time to datetime.time object
-                sunrise_time_tomorrow = datetime.strptime(
-                    sunrise_response_tomorrow.json()["results"]["sunrise"],
-                    "%I:%M:%S %p",
-                ).time()
-
-                # Get tomorrow's date
-                tomorrow_date = datetime.now().date() + timedelta(days=1)
-
-                # Get timezone
-                local_timezone = pytz.timezone(
-                    sunrise_response_tomorrow.json()["results"]["timezone"]
-                )
-                # print("\n\n\n\n\n\n", local_timezone, type(local_timezone), "\n\n\n")
-
-                # Combine the two to create a datetime.datetime object
-                livestream.local_sunrise_time_tomorrow = datetime.combine(
-                    tomorrow_date, sunrise_time_tomorrow
-                ).replace(tzinfo=local_timezone)
-
-            livestream.save()
+        for livestream in livestreams:
+            get_sunrise_time("today", livestream)
+            get_sunrise_time("tomorrow", livestream)
