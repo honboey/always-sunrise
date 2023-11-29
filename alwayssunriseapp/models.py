@@ -8,7 +8,8 @@ class Livestream(models.Model):
     livestream_url = models.URLField()
     latitude = models.DecimalField(max_digits=11, decimal_places=8, default=-33.867778)
     longitude = models.DecimalField(max_digits=11, decimal_places=8, default=151.21)
-    local_sunrise_time = models.TimeField()
+    local_sunrise_time_today = models.TimeField(default="06:56:44")
+    local_sunrise_time_tomorrow = models.TimeField(default="06:56:44")
     local_time = models.TimeField()
     weather = models.CharField(max_length=200)
 
