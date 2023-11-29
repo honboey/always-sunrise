@@ -31,10 +31,10 @@
       <dl class="livestream-info__definition-list">
         <dt class="livestream-info__definition-term">Local sunrise time</dt>
         <dd class="livestream-info__definition-description">{% timezone livestream.timezone %}{{ livestream.sunrise_time_today|time }}{% endtimezone %}</dd>
-        <dt class="livestream-info__definition-term">Local time</dt>
-        <dd class="livestream-info__definition-description">{{ livestream.local_time }}</dd>
-        <dt class="livestream-info__definition-term">Weather</dt>
-        <dd class="livestream-info__definition-description">{{ livestream.weather }}</dd>
+        <dt class="livestream-info__definition-term livestream-info__definition-term--mt-2">Local time</dt>
+        <dd class="livestream-info__definition-description livestream-info__definition-description--mt-2">{{ livestream.local_time|time }}</dd>
+        <dt class="livestream-info__definition-term livestream-info__definition-term--mt-2">Weather</dt>
+        <dd class="livestream-info__definition-description livestream-info__definition-description--mt-2">{{ livestream.weather }}</dd>
       </dl>
       <button class="change-location-button">Change location</button>
     </div>

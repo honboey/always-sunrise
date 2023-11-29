@@ -26,7 +26,8 @@ body {
   padding-top: 3rem;
   padding-bottom: 3rem;
   font-family: "Calibre", Arial, Helvetica, sans-serif;
-  font-size: 1.25rem;
+  font-size: 1.15rem;
+  line-height: 1.3;
   font-weight: 400;
   background-image: url("../images/sunrise-bg.jpg");
   background-size: cover;
@@ -35,14 +36,14 @@ body {
 /* Type */
 
 h1 {
-  margin: 0 0 3rem 0;
-  font-size: inherit;
+  margin: 0 0 2rem 0;
+  font-size: 1.5rem;
   font-weight: 500;
 }
 
 h2 {
-  margin: 0 0 3rem 0;
-  font-size: inherit;
+  margin: 0 0 2rem 0;
+  font-size: 1.25rem;
   font-weight: 500;
 }
 
@@ -100,6 +101,11 @@ header {
 .livestream-info__definition-description {
   grid-column: 6/10;
   margin: 0;
+}
+
+.livestream-info__definition-description--mt-2,
+.livestream-info__definition-term--mt-2 {
+  margin-top: 0.25rem;
 }
 
 .change-location-button {
