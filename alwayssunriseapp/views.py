@@ -6,7 +6,7 @@ from .models import Livestream
 
 
 def index(request):
-    livestream = Livestream.objects.get(location__contains="Sydney")
+    livestream = Livestream.objects.get(location__contains="Tokyo")
     return render(request, "alwayssunriseapp/index.html", {"livestream": livestream})
 
 

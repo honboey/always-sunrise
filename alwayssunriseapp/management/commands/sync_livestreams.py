@@ -37,16 +37,14 @@ class Command(BaseCommand):
                     today_date, sunrise_time_today
                 )
 
-                # Save naive datetime.datetime object to model
-                livestream.local_sunrise_time_today = naive_local_sunrise_time_today
+                # Convert to aware datetime.datetime object and save to model
+                livestream.sunrise_time_today = local_timezone.localize(naive_local_sunrise_time_today)
 
 
                 # Add timezone to model
                 livestream.timezone = sunrise_response_today.json()["results"][
                     "timezone"
                 ]
-
-                print(livestream.location, livestream.local_sunrise_time_today, livestream.local_sunrise_time_today.tzinfo)
 
             # Tomorrow's sunrise information
 
