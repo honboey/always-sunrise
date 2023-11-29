@@ -95,11 +95,11 @@ header {
 }
 
 .livestream-info__definition-term {
-  grid-column: 1/5;
+  grid-column: 1/4;
 }
 
 .livestream-info__definition-description {
-  grid-column: 6/10;
+  grid-column: 5/10;
   margin: 0;
 }
 
