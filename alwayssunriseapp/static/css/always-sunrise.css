@@ -35,13 +35,13 @@ body {
 /* Type */
 
 h1 {
-  margin: 0 0 1rem 0;
+  margin: 0 0 3rem 0;
   font-size: inherit;
   font-weight: 500;
 }
 
 h2 {
-  margin: 0 0 1rem 0;
+  margin: 0 0 3rem 0;
   font-size: inherit;
   font-weight: 500;
 }
@@ -132,8 +132,8 @@ footer {
 }
 
 .colophon__link-list {
-  list-style: none;
   padding: 0;
+  list-style: none;
 }
 
 .colophon__link-list-item {
