@@ -34,7 +34,7 @@ def format_time_after_sunrise(timedelta_object):
             return f"{time_str} till sunrise"
 
 
-def display_appropriate_livestream(livestream_queryset):
+def create_qs_with_future_sunrise_livestreams(livestream_queryset):
     """
     Queryset -> Livestream model
     Given a queryset of livestream models, choose the one which is closest to its
@@ -43,11 +43,10 @@ def display_appropriate_livestream(livestream_queryset):
     • Sunrise must be in the future
     • It's time to sunrise must be the smallest out of all in the queryset
     """
-    for livestream in livestream_queryset:
-        current_time = datetime.now(pytz.timezone(livestream.timezone))
-        if livestream.sunrise_time_today > current_time:
-            print(f"{livestream} will be deleted")
-            
+    future_sunrise_livestreams = livestream_queryset.filter(
+        sunrise_time_today__gt=datetime.now(pytz.timezone("UTC"))
+    )
+    print(future_sunrise_livestreams)
 
 
 # Create your views here.
