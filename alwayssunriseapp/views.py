@@ -34,19 +34,38 @@ def format_time_after_sunrise(timedelta_object):
             return f"{time_str} till sunrise"
 
 
-def create_qs_with_future_sunrise_livestreams(livestream_queryset):
+def filter_future_sunrise_livestreams(livestream_queryset):
     """
-    Queryset -> Livestream model
-    Given a queryset of livestream models, choose the one which is closest to its
-    upcoming sunrise time.
-    The conditions are:
-    • Sunrise must be in the future
-    • It's time to sunrise must be the smallest out of all in the queryset
+    Queryset -> Queryset
+    Given a queryset of livestream models remove all livestreams where the sunrise has already occurred.
     """
     future_sunrise_livestreams = livestream_queryset.filter(
         sunrise_time_today__gt=datetime.now(pytz.timezone("UTC"))
     )
-    print(future_sunrise_livestreams)
+    return future_sunrise_livestreams
+
+
+def get_next_sunrise_livestream(livestream_queryset):
+    """
+    Queryset -> Livestream
+    Given a queryset of livestreams, choose the livestream which is closest to its upcoming sunrise
+    """
+    # Get the current time in UTC
+    current_time = timezone.now()
+
+    # Calculate the time differences for each Livestream object
+    time_differences = [
+        (
+            livestream,
+            abs((current_time - livestream.sunrise_time_today).total_seconds()),
+        )
+        for livestream in livestream_queryset
+    ]
+
+    # Find the Livestream object with the shortest time difference
+    nearest_livestream = min(time_differences, key=lambda x: x[1])[0]
+
+    return nearest_livestream
 
 
 # Create your views here.
