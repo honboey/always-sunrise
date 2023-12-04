@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.utils import timezone
-from .models import Livestream
-from .views import filter_future_sunrise_livestreams, get_next_sunrise_livestream
+from ..models import Livestream
+from ..views import filter_future_sunrise_livestreams, get_next_sunrise_livestream
 import pytz
 from datetime import datetime, timedelta
 from freezegun import freeze_time

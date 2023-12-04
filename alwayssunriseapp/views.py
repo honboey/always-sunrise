@@ -81,7 +81,9 @@ def index(request):
     upcoming_livestream = get_next_sunrise_livestream(filtered_livestreams)
 
     # Create string of time difference
-    time_in_relation_to_sunrise = format_time_after_sunrise(upcoming_livestream.sunrise_time_today - current_time)
+    time_in_relation_to_sunrise = format_time_after_sunrise(
+        upcoming_livestream.sunrise_time_today - current_time
+    )
 
     return render(
         request,
