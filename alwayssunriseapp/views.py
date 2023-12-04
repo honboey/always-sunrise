@@ -72,18 +72,22 @@ def get_next_sunrise_livestream(livestream_queryset):
 
 
 def index(request):
-    livestream = Livestream.objects.get(location__contains="Tokyo")
-    current_time = datetime.now(pytz.timezone(livestream.timezone))
-    time_difference = current_time - livestream.sunrise_time_today
+    livestreams = Livestream.objects.all()
+    current_time = datetime.now(pytz.utc)
+
+    # Get correct livestream
+    filtered_livestreams = filter_future_sunrise_livestreams(livestreams)
+    print(filtered_livestreams)
+    upcoming_livestream = get_next_sunrise_livestream(filtered_livestreams)
 
     # Create string of time difference
-    time_in_relation_to_sunrise = format_time_after_sunrise(time_difference)
+    time_in_relation_to_sunrise = format_time_after_sunrise(upcoming_livestream.sunrise_time_today - current_time)
 
     return render(
         request,
         "alwayssunriseapp/index.html",
         {
-            "livestream": livestream,
+            "livestream": upcoming_livestream,
             "current_time": current_time,
             "time_in_relation_to_sunrise": time_in_relation_to_sunrise,
         },
