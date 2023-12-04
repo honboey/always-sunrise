@@ -23,15 +23,15 @@ def format_time_after_sunrise(timedelta_object):
     # Build the string based on the conditions
     if hours == 0 and minutes < 60:
         if is_positive:
-            return f"{minutes}min after sunrise"
-        else:
             return f"{minutes}min till sunrise"
+        else:
+            return f"{minutes}min after sunrise"
     else:
         time_str = f"{hours}h and {minutes}min"
         if is_positive:
-            return f"{time_str} after sunrise"
-        else:
             return f"{time_str} till sunrise"
+        else:
+            return f"{time_str} after sunrise"
 
 
 def filter_future_sunrise_livestreams(livestream_queryset):
@@ -83,7 +83,7 @@ def index(request):
     time_in_relation_to_sunrise = format_time_after_sunrise(
         upcoming_livestream.sunrise_time_today - current_time
     )
-
+    print(        upcoming_livestream.sunrise_time_today - current_time)
     return render(
         request,
         "alwayssunriseapp/index.html",
