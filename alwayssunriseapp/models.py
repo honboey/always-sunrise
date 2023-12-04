@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 
 class Livestream(models.Model):
     location = models.CharField(max_length=200)
-    livestream_url = models.URLField()
+    youtube_id = models.CharField(max_length=20,null=True)
     latitude = models.DecimalField(max_digits=11, decimal_places=8)
     longitude = models.DecimalField(max_digits=11, decimal_places=8)
     timezone = models.CharField(max_length=200)

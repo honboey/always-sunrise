@@ -77,7 +77,6 @@ def index(request):
 
     # Get correct livestream
     filtered_livestreams = filter_future_sunrise_livestreams(livestreams)
-    print(filtered_livestreams)
     upcoming_livestream = get_next_sunrise_livestream(filtered_livestreams)
 
     # Create string of time difference
