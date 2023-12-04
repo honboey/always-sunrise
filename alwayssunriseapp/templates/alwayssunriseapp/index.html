@@ -1,6 +1,7 @@
 {% load static %}
 {% load tz %}
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -41,7 +42,7 @@
     </div>
   </header>
   <main>
-    <iframe src="https://www.youtube.com/embed/6dp-bvQ7RWo?si=cFkJ5ipJqTlefH1Z&autoplay=1" class="livestream-iframe" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    <iframe src="https://www.youtube.com/embed/{{ livestream.youtube_id }}?&autoplay=1" class="livestream-iframe" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
   </main>
   <footer>
     <p>Always Sunrise was designed and built by <a href="https://dialogicstudios.com.au"> Hon Boey</a> based on an idea called <a href="https://sunset.funwebsite.fun/">Eternal Sunset</a>.</p>
