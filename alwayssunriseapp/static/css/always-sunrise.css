@@ -82,19 +82,19 @@ header {
 
 .livestream-info__container {
   display: grid;
-  grid-column: 17/25;
+  grid-column: 16/25;
   grid-template-columns: subgrid;
   margin-bottom: 3rem;
 }
 
 .livestream-location {
-  grid-column: 1/9;
+  grid-column: 1/10;
 }
 
 .livestream-info__definition-list {
   display: grid;
   grid-template-columns: subgrid;
-  grid-column: 1/9;
+  grid-column: 1/10;
   margin: 0 0 1rem 0;
 }
 
@@ -138,6 +138,27 @@ main {
   width: 100%;
   aspect-ratio: 16/9;
 }
+
+/* Livestream listings table */
+
+.livestream-listings__table {
+  border-collapse: collapse;
+  width: 100%;;
+}
+
+.livestream-listings__table-head {
+  font-weight: 500;
+}
+
+.livestream-listings__table-cell {
+  padding: 1rem 2rem 1rem 0;
+  border-bottom: solid black 0.5px;
+}
+
+.livestream-listings__table-cell--text-right {
+  text-align: right;
+}
+/* Footer */
 
 footer {
   grid-column: 17/25;

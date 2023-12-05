@@ -8,20 +8,20 @@
 {% endblock livestream-info %}
 
 {% block main %}
-  <table>
-    <thead>
+  <table class="livestream-listings__table">
+    <thead class="livestream-listings__table-head">
       <tr>
-        <td>Location</td>
-        <td>Sunrise time</td>
-        <td>Current time</td>
+        <td class="livestream-listings__table-cell">Location</td>
+        <td class="livestream-listings__table-cell livestream-listings__table-cell--text-right">Sunrise time</td>
+        <td class="livestream-listings__table-cell livestream-listings__table-cell--text-right">Current time</td>
       </tr>
     </thead>
     <tbody>
       {% for livestream in livestreams %}
         <tr>
-          <td>{{ livestream }}</td>
-          <td>{% timezone livestream.timezone %}{{ livestream.sunrise_time_today|time }}{% endtimezone %}</td>
-          <td>{% timezone livestream.timezone %}{{ current_time|time }}{% endtimezone %}</td>
+          <td class="livestream-listings__table-cell"><a href="{% url 'single_livestream' pk=livestream.pk %}">{{ livestream }}</a></td>
+          <td class="livestream-listings__table-cell livestream-listings__table-cell--text-right">{% timezone livestream.timezone %}{{ livestream.sunrise_time_today|time }}{% endtimezone %}</td>
+          <td class="livestream-listings__table-cell livestream-listings__table-cell--text-right">{% timezone livestream.timezone %}{{ current_time|time }}{% endtimezone %}</td>
         </tr>
       {% endfor %}
     </tbody>
