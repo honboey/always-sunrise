@@ -96,9 +96,15 @@ def index(request):
 
 def livestream_list(request):
     livestreams = Livestream.objects.all()
+    current_time = datetime.now(pytz.utc)
 
     return render(
-        request, "alwayssunriseapp/livestream_list.html", {"livestreams": livestreams}
+        request,
+        "alwayssunriseapp/livestream_list.html",
+        {
+            "livestreams": livestreams,
+            "current_time": current_time,
+        },
     )
 
 

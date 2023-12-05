@@ -1,15 +1,29 @@
 {% extends "./base.html" %}
 {% load tz %}
 
+{% block livestream-info %}
+<div class="livestream-info__container">
+  <h2 class="livestream-location">Browse the livestreams</h2>
+</div>
+{% endblock livestream-info %}
+
 {% block main %}
-  <ul>
-    {% for livestream in livestreams %}
-      <li>
-        <a href="{% url 'single_livestream' pk=livestream.pk %}">
-          <h2>{{ livestream }}</h2>
-        </a>
-        <p>{% timezone livestream.timezone %}{{ livestream.sunrise_time_today|time }}{% endtimezone %}</p>
-      </li>
-    {% endfor %}
-  </ul>
+  <table>
+    <thead>
+      <tr>
+        <td>Location</td>
+        <td>Sunrise time</td>
+        <td>Current time</td>
+      </tr>
+    </thead>
+    <tbody>
+      {% for livestream in livestreams %}
+        <tr>
+          <td>{{ livestream }}</td>
+          <td>{% timezone livestream.timezone %}{{ livestream.sunrise_time_today|time }}{% endtimezone %}</td>
+          <td>{% timezone livestream.timezone %}{{ current_time|time }}{% endtimezone %}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 {% endblock main %}
