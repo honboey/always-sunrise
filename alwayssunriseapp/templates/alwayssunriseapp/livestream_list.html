@@ -5,7 +5,7 @@
   <ul>
     {% for livestream in livestreams %}
       <li>
-        <a href="">
+        <a href="{% url 'single_livestream' pk=livestream.pk %}">
           <h2>{{ livestream }}</h2>
         </a>
         <p>{% timezone livestream.timezone %}{{ livestream.sunrise_time_today|time }}{% endtimezone %}</p>

@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
 from .models import Livestream
 from datetime import datetime, timedelta
@@ -83,7 +83,6 @@ def index(request):
     time_in_relation_to_sunrise = format_time_after_sunrise(
         upcoming_livestream.sunrise_time_today - current_time
     )
-    print(        upcoming_livestream.sunrise_time_today - current_time)
     return render(
         request,
         "alwayssunriseapp/index.html",
@@ -96,10 +95,27 @@ def index(request):
 
 
 def livestream_list(request):
-    livestreams = Livestream.objects.filter(
-        sunrise_time_today__lte=timezone.now()
-    ).order_by("sunrise_time_today")
+    livestreams = Livestream.objects.all()
 
     return render(
         request, "alwayssunriseapp/livestream_list.html", {"livestreams": livestreams}
+    )
+
+
+def single_livestream(request, pk):
+    livestream = get_object_or_404(Livestream, pk=pk)
+    current_time = datetime.now(pytz.utc)
+
+    time_in_relation_to_sunrise = format_time_after_sunrise(
+        livestream.sunrise_time_today - current_time
+    )
+
+    return render(
+        request,
+        "alwayssunriseapp/single_livestream.html",
+        {
+            "livestream": livestream,
+            "current_time": current_time,
+            "time_in_relation_to_sunrise": time_in_relation_to_sunrise,
+        },
     )
