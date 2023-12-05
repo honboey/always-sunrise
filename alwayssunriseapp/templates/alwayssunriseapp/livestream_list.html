@@ -1,19 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Always Sunrise – Livestream list</title>
-</head>
-<body>
-  <h1>Livestream List</h1>
+{% extends "./base.html" %}
+{% load tz %}
+
+{% block main %}
   <ul>
     {% for livestream in livestreams %}
       <li>
-        <h2>{{ livestream }}</h2>
-        <p>{{ livestream.sunrise_time_today }}</p>
+        <a href="">
+          <h2>{{ livestream }}</h2>
+        </a>
+        <p>{% timezone livestream.timezone %}{{ livestream.sunrise_time_today|time }}{% endtimezone %}</p>
       </li>
     {% endfor %}
   </ul>
-</body>
-</html>
+{% endblock main %}

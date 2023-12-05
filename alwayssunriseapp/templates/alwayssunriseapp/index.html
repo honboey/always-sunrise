@@ -1,94 +1,23 @@
-{% load static %}
+{% extends "./base.html" %}
 {% load tz %}
 
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Always Sunrise – Livestream list</title>
-  <link rel="stylesheet" href="{% static 'css/normalize.css' %}">
-  <link rel="stylesheet" href="{% static 'css/always-sunrise.css' %}">
-</head>
-<body>
-  <header>
-    <div class="masthead">
-      <h1>
-        <span class="logo">
-          <svg xmlns="http://www.w3.org/2000/svg" width="55" height="18" viewBox="0 0 55 18">
-            <g id="Group_1" data-name="Group 1" transform="translate(-19.5 -33)">
-              <line id="Line_1" data-name="Line 1" x2="55" transform="translate(19.5 50.5)" fill="none" stroke="#000" stroke-width="1"/>
-              <path id="Subtraction_2" data-name="Subtraction 2" d="M37.994,18H3.008C3,17.814,3,17.651,3,17.5A17.5,17.5,0,0,1,32.874,5.126,17.386,17.386,0,0,1,38,17.5c0,.164,0,.332-.007.5Z" transform="translate(25.999 33)"/>
-            </g>
-          </svg>
-        </span>
-        Always Sunrise
-      </h1>
-      <p>There's always a sunrise somewhere in the world. Let's watch it happen.</p>
-    </div>
-    <div class="livestream-info__container">
-      <h2 class="livestream-location">{{ livestream.location }}</h2>
-      <dl class="livestream-info__definition-list">
-        <dt class="livestream-info__definition-term">Local sunrise time</dt>
-        <dd class="livestream-info__definition-description">{% timezone livestream.timezone %}{{ livestream.sunrise_time_today|time }}{% endtimezone %}</dd>
-        <dt class="livestream-info__definition-term livestream-info__definition-term--mt-2">Local time</dt>
-        <dd class="livestream-info__definition-description livestream-info__definition-description--mt-2">{% timezone livestream.timezone %}{{ current_time|time }}{% endtimezone %}<br>
-        ({{ time_in_relation_to_sunrise }})</dd>
-        <dt class="livestream-info__definition-term livestream-info__definition-term--mt-2">Weather</dt>
-        <dd class="livestream-info__definition-description livestream-info__definition-description--mt-2">{{ livestream.weather }}</dd>
-      </dl>
-      <button class="change-location-button">Change location</button>
-    </div>
-  </header>
-  <main>
-    <iframe src="https://www.youtube.com/embed/{{ livestream.youtube_id }}?&autoplay=1" class="livestream-iframe" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-  </main>
-  <footer>
-    <p>Always Sunrise was designed and built by <a href="https://dialogicstudios.com.au"> Hon Boey</a> based on an idea called <a href="https://sunset.funwebsite.fun/">Eternal Sunset</a>.</p>
-    
-    <p>It is built using <a href="https://www.djangoproject.com/">Django</a>. Feel free to <a href="https://github.com/honboey/always-sunrise">fork the project or contribute</a>.</p>
-    
-    <p>This site uses Calibre, a typeface designed by <a href="https://klim.co.nz/">Klim Type</a>.</p>
-      
-    <p>Find out more about Hon by visiting the following links:
-      <ul class="colophon__link-list">
-        <li class="colophon__link-list-item">
-          <a href="https://dialogicstudios.com.au">
-            <span>
-              <svg xmlns="http://www.w3.org/2000/svg" width="18.024" height="18.024" viewBox="0 0 18.024 18.024">
-                <path id="Path_4" data-name="Path 4" d="M9.012,16.334c.261,0,.95-.253,1.676-1.7a10.191,10.191,0,0,0,.774-2.239h-4.9a10.191,10.191,0,0,0,.774,2.239C8.062,16.081,8.752,16.334,9.012,16.334ZM6.284,10.7H11.74a16.283,16.283,0,0,0,.088-1.69,16.283,16.283,0,0,0-.088-1.69H6.284a16.266,16.266,0,0,0,0,3.38Zm.278-5.069h4.9a10.191,10.191,0,0,0-.774-2.239c-.725-1.45-1.415-1.7-1.676-1.7s-.95.253-1.676,1.7A10.191,10.191,0,0,0,6.562,5.633Zm6.875,1.69c.053.546.077,1.112.077,1.69s-.028,1.144-.077,1.69h2.7a7.424,7.424,0,0,0,.2-1.69,7.231,7.231,0,0,0-.2-1.69h-2.7Zm2.07-1.69a7.351,7.351,0,0,0-3.464-3.288,11.728,11.728,0,0,1,1.148,3.288h2.316Zm-10.677,0A11.768,11.768,0,0,1,5.978,2.345,7.351,7.351,0,0,0,2.514,5.633H4.83ZM1.887,7.322a7.424,7.424,0,0,0-.2,1.69,7.231,7.231,0,0,0,.2,1.69h2.7c-.053-.546-.077-1.112-.077-1.69s.028-1.144.077-1.69ZM12.043,15.68a7.351,7.351,0,0,0,3.464-3.288H13.191A11.768,11.768,0,0,1,12.043,15.68Zm-6.062,0a11.728,11.728,0,0,1-1.148-3.288H2.514A7.351,7.351,0,0,0,5.978,15.68Zm3.031,2.345a9.012,9.012,0,1,1,9.012-9.012,9.012,9.012,0,0,1-9.012,9.012Z"/>
-              </svg>
-            </span>
-          </a>
-        </li>
-        <li class="colophon__link-list-item">
-          <a href="https://github.com/honboey/">
-            <span>
-              <svg xmlns="http://www.w3.org/2000/svg" width="17.568" height="17.13" viewBox="0 0 17.568 17.13">
-                <path id="Path_3" data-name="Path 3" d="M5.876,21.793c0,.071-.081.128-.184.128s-.2-.046-.2-.128.081-.128.184-.128S5.876,21.711,5.876,21.793Zm-1.1-.159c-.025.071.046.152.152.174a.166.166,0,0,0,.22-.071c.021-.071-.046-.152-.152-.184A.182.182,0,0,0,4.775,21.633Zm1.566-.06c-.1.025-.174.092-.163.174s.1.117.209.092.174-.092.163-.163S6.443,21.562,6.34,21.573ZM8.671,8A8.493,8.493,0,0,0,0,16.643a8.88,8.88,0,0,0,6,8.473c.453.081.613-.2.613-.429s-.011-1.431-.011-2.175c0,0-2.479.531-3-1.056,0,0-.4-1.031-.985-1.3,0,0-.811-.556.057-.545a1.87,1.87,0,0,1,1.367.914,1.872,1.872,0,0,0,2.582.74,1.969,1.969,0,0,1,.567-1.194c-1.98-.22-3.978-.507-3.978-3.914a2.684,2.684,0,0,1,.836-2.086,3.347,3.347,0,0,1,.092-2.405c.74-.23,2.444.956,2.444.956a8.368,8.368,0,0,1,4.449,0s1.7-1.19,2.444-.956a3.345,3.345,0,0,1,.092,2.405,2.753,2.753,0,0,1,.914,2.086c0,3.418-2.086,3.691-4.066,3.914a2.1,2.1,0,0,1,.6,1.644c0,1.194-.011,2.671-.011,2.961,0,.23.163.51.613.429a8.8,8.8,0,0,0,5.944-8.465A8.685,8.685,0,0,0,8.671,8ZM3.443,20.216c-.046.035-.035.117.025.184s.138.081.184.035.035-.117-.025-.184S3.489,20.17,3.443,20.216ZM3.06,19.93c-.025.046.011.1.081.138a.105.105,0,0,0,.152-.025c.025-.046-.011-.1-.081-.138S3.085,19.894,3.06,19.93Zm1.148,1.261c-.057.046-.035.152.046.22s.184.092.23.035.025-.152-.046-.22S4.254,21.134,4.208,21.191Zm-.4-.521c-.057.035-.057.128,0,.209s.152.117.2.081a.162.162,0,0,0,0-.22C3.953,20.659,3.861,20.624,3.8,20.67Z" transform="translate(0 -8)"/>
-              </svg>
-            </span>
-          </a>
-        </li> 
-        <li class="colophon__link-list-item">
-          <a href="https://linkedin.com/in/hon-boey-924532137">
-            <span>
-              <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512">><path d="M100.28 448H7.4V148.9h92.88zM53.79 108.1C24.09 108.1 0 83.5 0 53.8a53.79 53.79 0 0 1 107.58 0c0 29.7-24.1 54.3-53.79 54.3zM447.9 448h-92.68V302.4c0-34.7-.7-79.2-48.29-79.2-48.29 0-55.69 37.7-55.69 76.7V448h-92.78V148.9h89.08v40.8h1.3c12.4-23.5 42.69-48.3 87.88-48.3 94 0 111.28 61.9 111.28 142.3V448z"/></svg>
-            </span>
-          </a>
-        </li> 
-        <li class="colophon__link-list-item">
-          <a href="https://www.instagram/diceboey">
-            <span>
-              <svg xmlns="http://www.w3.org/2000/svg" width="17.139" height="17.136" viewBox="0 0 17.139 17.136">
-                <path id="Path_1" data-name="Path 1" d="M8.5,36a4.393,4.393,0,1,0,4.393,4.393A4.386,4.386,0,0,0,8.5,36Zm0,7.25a2.856,2.856,0,1,1,2.856-2.856A2.861,2.861,0,0,1,8.5,43.249Zm5.6-7.429A1.025,1.025,0,1,1,13.07,34.8,1.022,1.022,0,0,1,14.094,35.82ZM17,36.86a5.071,5.071,0,0,0-1.384-3.59,5.1,5.1,0,0,0-3.59-1.384c-1.415-.08-5.655-.08-7.07,0a5.1,5.1,0,0,0-3.59,1.38,5.088,5.088,0,0,0-1.384,3.59c-.08,1.415-.08,5.655,0,7.07a5.071,5.071,0,0,0,1.384,3.59A5.111,5.111,0,0,0,4.96,48.9c1.415.08,5.655.08,7.07,0a5.071,5.071,0,0,0,3.59-1.384A5.1,5.1,0,0,0,17,43.926C17.084,42.511,17.084,38.275,17,36.86Zm-1.828,8.584a2.892,2.892,0,0,1-1.629,1.629c-1.128.447-3.8.344-5.051.344s-3.927.1-5.051-.344a2.892,2.892,0,0,1-1.629-1.629c-.447-1.128-.344-3.8-.344-5.051s-.1-3.927.344-5.051a2.892,2.892,0,0,1,1.629-1.629c1.128-.447,3.8-.344,5.051-.344s3.927-.1,5.051.344a2.892,2.892,0,0,1,1.629,1.629c.447,1.128.344,3.8.344,5.051S15.624,44.32,15.177,45.444Z" transform="translate(0.075 -31.825)"/>
-              </svg>
-            </span>
-          </a>
-        </li> 
-      </ul>
-    </p>
-  </footer>
-</body>
-</html>
+{% block livestream-info %}
+  <div class="livestream-info__container">
+    <h2 class="livestream-location">{{ livestream.location }}</h2>
+    <dl class="livestream-info__definition-list">
+      <dt class="livestream-info__definition-term">Local sunrise time</dt>
+      <dd class="livestream-info__definition-description">{% timezone livestream.timezone %}{{ livestream.sunrise_time_today|time }}{% endtimezone %}</dd>
+      <dt class="livestream-info__definition-term livestream-info__definition-term--mt-2">Local time</dt>
+      <dd class="livestream-info__definition-description livestream-info__definition-description--mt-2">{% timezone livestream.timezone %}{{ current_time|time }}{% endtimezone %}<br>
+      ({{ time_in_relation_to_sunrise }})</dd>
+      <dt class="livestream-info__definition-term livestream-info__definition-term--mt-2">Weather</dt>
+      <dd class="livestream-info__definition-description livestream-info__definition-description--mt-2">{{ livestream.weather }}</dd>
+    </dl>
+    <button class="change-location-button">Change location</button>
+  </div>
+{% endblock livestream-info %}
+
+{% block main %}
+  <iframe src="https://www.youtube.com/embed/{{ livestream.youtube_id }}?&autoplay=1" class="livestream-iframe" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+{% endblock main %}
