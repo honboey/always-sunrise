@@ -2,10 +2,6 @@
 
 Always Sunrise is a Django web app that determines where a sunrise is occuring and plays the closest livestream to that location. It can be found at [hon.pythonanywhere.com](http://hon.pythonanywhere.com/).
 
-## Servers
-
-Always Sunrise is hosted by PythonAnywhere. To run commands on the PythonAnywhere server you will need to open a Bash console in the virtual environment. To do so, in the PythonAnywhere dashboard, go to "Web apps" and click on "Start a console in this virtualenv".
-
 ## Running the project
 
 1. Clone this project
@@ -30,6 +26,10 @@ When a user visits the site, the server decides which livestream to show. This i
 2. Only show a livestream where the time to sunrise is the shortest
 
 Because sunrise times change everyday, a daily call is made to the SunriseSunset API to update all livestream's sunrise times. This occurs at 1:19am (UTC).
+
+## Servers
+
+Always Sunrise is hosted by PythonAnywhere. To run commands on the PythonAnywhere server you will need to open a Bash console in the virtual environment. To do so, in the PythonAnywhere dashboard, go to "Web apps" and click on "Start a console in this virtualenv".
 
 ### Useful Commands
 • Retrieve sunrise times and add them to your objects:
