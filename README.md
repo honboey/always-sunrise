@@ -19,6 +19,17 @@ GOOGLE_MAPS_API_KEY=<your_key>
 
 ### How it works
 
+When an livestream object is created, the admin inputs its location and livestream YouTube ID. On save, two API calls are made:
+1. The first is to the Google Geocode API which uses its location to returns its latitude and longitude.
+2. The second is to the SunriseSunset API which sends the aforementioned lat and long and requests the sunrise time for today.
+
+These are then saved to the database.
+
+When a user visits the site, the server decides which livestream to show. This is determined by two factors:
+1. Only show a livestream where the sunrise is in the future
+2. Only show a livestream where the time to sunrise is the shortest
+
+Because sunrise times change everyday, a daily call is made to the SunriseSunset API to update all livestream's sunrise times. This occurs at 1:19am (UTC).
 
 ### Useful Commands
 • Retrieve sunrise times and add them to your objects:
@@ -29,9 +40,6 @@ python manage.py sync_livestreams
 ```
 black alwayssunriseapp ./*.py --exclude migrations
 ```
-
-The designs:
-https://xd.adobe.com/view/541b4400-e7d1-4331-a90a-7c6d0b698075-0148/
 
 
 
