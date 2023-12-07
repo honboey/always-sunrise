@@ -8,9 +8,27 @@ Always Sunrise is hosted by PythonAnywhere. To run commands on the PythonAnywher
 
 ## Running the project
 
+1. Clone this project
+2. Setup your virtual environment
+3. Install the requirements with `pip install -r requirements.txt`
+4. Get a Google Geocode API key. [Instructions here](https://developers.google.com/maps/documentation/geocoding/get-api-key).
+5. Create a `.env` file and add this API key as follows (no `""` surround your key):
+```
+GOOGLE_MAPS_API_KEY=<your_key>
+```
+
+### How it works
+
 
 ### Useful Commands
-Run Black (python formatter): `black alwayssunriseapp ./*.py --exclude migrations`
+• Retrieve sunrise times and add them to your objects:
+```
+python manage.py sync_livestreams
+```
+• Run Black (python formatter): 
+```
+black alwayssunriseapp ./*.py --exclude migrations
+```
 
 The designs:
 https://xd.adobe.com/view/541b4400-e7d1-4331-a90a-7c6d0b698075-0148/
