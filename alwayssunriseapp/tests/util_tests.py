@@ -15,9 +15,8 @@ class UtilTests(TestCase):
     def test_get_lat_and_long__invalid_search(self):
         result = get_lat_and_long("als;dkfj")
         self.assertEqual(result, None)
-    
+
     # Test timezone API
     def test_get_timezone(self):
         result = get_timezone((-33.8688197, 151.2092955))
         self.assertEqual(result, "Australia/Sydney")
-   

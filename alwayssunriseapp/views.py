@@ -1,5 +1,4 @@
 from django.shortcuts import render, get_object_or_404
-from django.utils import timezone
 from .models import Livestream
 from datetime import datetime, timedelta
 
@@ -51,21 +50,39 @@ def get_next_sunrise_livestream(livestream_queryset):
     Given a queryset of livestreams, choose the livestream which is closest to its upcoming sunrise
     """
     # Get the current time in UTC
-    current_time = timezone.now()
-
-    # Calculate the time differences for each Livestream object
-    time_differences = [
-        (
-            livestream,
-            abs((current_time - livestream.sunrise_time_today).total_seconds()),
-        )
-        for livestream in livestream_queryset
+    current_time = datetime.now(pytz.timezone("UTC"))
+    time_differences = []
+    """
+    This will look like:
+    [
+        {
+            "livestream": livestream, 
+            "time_to_next_sunrise": 123
+        },
+        {
+            "livestream": livestream, 
+            "time_to_next_sunrise": 123
+        },
     ]
+    """
+    for livestream in livestream_queryset:
+        if livestream.sunrise_time_today > current_time:
+            time_to_next_sunrise = livestream.sunrise_time_today - current_time
+        else:
+            time_to_next_sunrise = livestream.sunrise_time_tomorrow - current_time
 
-    # Find the Livestream object with the shortest time difference
-    nearest_livestream = min(time_differences, key=lambda x: x[1])[0]
+        time_differences.append(
+            {
+                "livestream": livestream,
+                "time_to_next_sunrise": int(time_to_next_sunrise.total_seconds()),
+            }
+        )
 
-    return nearest_livestream
+    selected_livestream = min(
+        time_differences,
+        key=lambda time_to_next_sunrise: time_to_next_sunrise["time_to_next_sunrise"],
+    )["livestream"]
+    return selected_livestream
 
 
 # Create your views here.
