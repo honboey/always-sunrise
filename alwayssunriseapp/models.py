@@ -16,6 +16,9 @@ class Livestream(models.Model):
     sunrise_time_tomorrow = models.DateTimeField()
     weather = models.CharField(max_length=200)
 
+    class Meta:
+        ordering = ["timezone"]
+
     def __str__(self):
         return self.location
     

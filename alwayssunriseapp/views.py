@@ -40,7 +40,7 @@ def filter_future_sunrise_livestreams(livestream_queryset):
     Given a queryset of livestream models remove all livestreams where the sunrise has already occurred.
     """
     future_sunrise_livestreams = livestream_queryset.filter(
-        sunrise_time_today__gt=datetime.now(pytz.timezone("UTC"))
+        sunrise_time_tomorrow__gt=datetime.now(pytz.timezone("UTC"))
     )
     return future_sunrise_livestreams
 
