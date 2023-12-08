@@ -131,7 +131,7 @@ def index(request):
 
 
 def livestream_list(request):
-    livestreams = Livestream.objects.all()
+    livestreams = Livestream.objects.all().order_by("longitude")
     current_time = datetime.now(pytz.utc)
     livestream_additional_info = []
 
