@@ -7,7 +7,11 @@ from django.utils import timezone
 
 from ..models import Livestream
 from ..factories import LivestreamFactory
-from ..views import filter_future_sunrise_livestreams, get_next_sunrise_livestream
+from ..views import (
+    filter_future_sunrise_livestreams,
+    get_next_sunrise_livestream,
+    get_sunrise_time_relationship,
+)
 
 # Create your tests here.
 
@@ -103,3 +107,33 @@ class IndexViewTests(TestCase):
         )
         livestream = get_next_sunrise_livestream(filtered_livestreams)
         self.assertEqual(livestream, self.nyc)
+
+    # get_sunrise_time_relationship()
+    @freeze_time("2023-12-6 16:00:00", tz_offset=0)
+    def test_get_sunrise_time_relationship__current_time_before_sunrise_today(self):
+        statement = get_sunrise_time_relationship(self.tokyo)
+        self.assertEqual(statement, "5h 11mins till sunrise")
+
+    @freeze_time("2023-12-6 21:00:00", tz_offset=0)
+    def test_get_sunrise_time_relationship__current_time_less_than_an_hour_before_sunrise_today(
+        self,
+    ):
+        statement = get_sunrise_time_relationship(self.tokyo)
+        self.assertEqual(statement, "11mins till sunrise")
+
+    @freeze_time("2023-12-8 02:00:00", tz_offset=0)
+    def test_get_sunrise_time_relationship__current_time_after_sunrise_tomorrow(self):
+        statement = get_sunrise_time_relationship(self.tokyo)
+        self.assertEqual(statement, "4h 48mins after sunrise")
+
+    @freeze_time("2023-12-6 23:00:00", tz_offset=0)
+    def test_get_sunrise_time_relationship__current_time_just_after_sunrise_today(self):
+        statement = get_sunrise_time_relationship(self.tokyo)
+        self.assertEqual(statement, "1h 49mins after sunrise")
+
+    @freeze_time("2023-12-7 20:00:00", tz_offset=0)
+    def test_get_sunrise_time_relationship__current_time_just_before_sunrise_tomorrow(
+        self,
+    ):
+        statement = get_sunrise_time_relationship(self.tokyo)
+        self.assertEqual(statement, "1h 12mins till sunrise")

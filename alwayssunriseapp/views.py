@@ -8,29 +8,50 @@ import pytz
 
 
 # Create string of time difference
-def format_time_after_sunrise(timedelta_object):
+def get_sunrise_time_relationship(livestream):
     """
-    Given a timedelta object of the difference of time between
+    Given a livestream object of the difference of time between
     the current time and the sunrise, render that difference as a string.
     """
-    # Extract hours and minutes from timedelta
-    hours, minutes = divmod(timedelta_object.seconds // 60, 60)
+    current_time = datetime.now(pytz.timezone("UTC"))
 
-    # Determine if it's positive or negative
-    is_positive = timedelta_object.total_seconds() >= 0
+    def convert_timedelta_to_human_readable_string(timedelta):
+        hours, remainder = divmod(time_diff.seconds, 3600)
+        minutes, seconds = divmod(remainder, 60)
+        return (hours, minutes)
 
-    # Build the string based on the conditions
-    if hours == 0 and minutes < 60:
-        if is_positive:
-            return f"{minutes}min till sunrise"
+    if livestream.sunrise_time_today > current_time:
+        time_diff = livestream.sunrise_time_today - current_time
+        time_diff_str = convert_timedelta_to_human_readable_string(time_diff)
+        if time_diff_str[0] == 0:
+            return f"{time_diff_str[1]}mins till sunrise"
         else:
-            return f"{minutes}min after sunrise"
+            return f"{time_diff_str[0]}h {time_diff_str[1]}mins till sunrise"
+
+    elif livestream.sunrise_time_tomorrow < current_time:
+        time_diff = current_time - livestream.sunrise_time_tomorrow
+        time_diff_str = convert_timedelta_to_human_readable_string(time_diff)
+        if time_diff_str[0] == 0:
+            return f"{time_diff_str[1]}mins after sunrise"
+        else:
+            return f"{time_diff_str[0]}h {time_diff_str[1]}mins after sunrise"
+
     else:
-        time_str = f"{hours}h and {minutes}min"
-        if is_positive:
-            return f"{time_str} till sunrise"
+        time_diff_from_sunrise_today = livestream.sunrise_time_tomorrow - current_time
+        if int(time_diff_from_sunrise_today.total_seconds()) > 21600:
+            time_diff = current_time - livestream.sunrise_time_today
+            time_diff_str = convert_timedelta_to_human_readable_string(time_diff)
+            if time_diff_str[0] == 0:
+                return f"{time_diff_str[1]}mins after sunrise"
+            else:
+                return f"{time_diff_str[0]}h {time_diff_str[1]}mins after sunrise"
         else:
-            return f"{time_str} after sunrise"
+            time_diff = livestream.sunrise_time_tomorrow - current_time
+            time_diff_str = convert_timedelta_to_human_readable_string(time_diff)
+            if time_diff_str[0] == 0:
+                return f"{time_diff_str[1]}mins till sunrise"
+            else:
+                return f"{time_diff_str[0]}h {time_diff_str[1]}mins till sunrise"
 
 
 def filter_future_sunrise_livestreams(livestream_queryset):
@@ -97,7 +118,7 @@ def index(request):
     upcoming_livestream = get_next_sunrise_livestream(filtered_livestreams)
 
     # Create string of time difference
-    time_in_relation_to_sunrise = format_time_after_sunrise(
+    time_in_relation_to_sunrise = get_sunrise_time_relationship(
         upcoming_livestream.sunrise_time_today - current_time
     )
     return render(
@@ -129,7 +150,7 @@ def single_livestream(request, pk):
     livestream = get_object_or_404(Livestream, pk=pk)
     current_time = datetime.now(pytz.utc)
 
-    time_in_relation_to_sunrise = format_time_after_sunrise(
+    time_in_relation_to_sunrise = get_sunrise_time_relationship(
         livestream.sunrise_time_today - current_time
     )
 
