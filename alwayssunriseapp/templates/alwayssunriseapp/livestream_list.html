@@ -14,11 +14,14 @@
       </tr>
     </thead>
     <tbody>
-      {% for livestream in livestreams %}
+      {% for livestream in livestream_additional_info %}
         <tr>
-          <td class="livestream-listings__table-cell"><a href="{% url 'single_livestream' pk=livestream.pk %}">{{ livestream }}</a></td>
-          <td class="livestream-listings__table-cell livestream-listings__table-cell--text-right">{% timezone livestream.timezone %}{{ livestream.sunrise_time_today|time }}{% endtimezone %}</td>
-          <td class="livestream-listings__table-cell livestream-listings__table-cell--text-right">{% timezone livestream.timezone %}{{ current_time|time }}{% endtimezone %}</td>
+          <td class="livestream-listings__table-cell"><a href="{% url 'single_livestream' pk=livestream.livestream.pk %}">{{ livestream.livestream }}</a></td>
+          <td class="livestream-listings__table-cell livestream-listings__table-cell--text-right">{% timezone livestream.livestream.timezone %}{{ livestream.livestream.sunrise_time_today|time }}{% endtimezone %}</td>
+          <td class="livestream-listings__table-cell livestream-listings__table-cell--text-right">
+            {% timezone livestream.livestream.timezone %}{{ current_time|time }}{% endtimezone %}
+            ({{ livestream.time_in_relation_to_sunrise }})
+          </td>
         </tr>
       {% endfor %}
     </tbody>

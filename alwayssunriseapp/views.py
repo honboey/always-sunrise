@@ -119,7 +119,7 @@ def index(request):
 
     # Create string of time difference
     time_in_relation_to_sunrise = get_sunrise_time_relationship(
-        upcoming_livestream.sunrise_time_today - current_time
+        upcoming_livestream
     )
     return render(
         request,
@@ -135,12 +135,21 @@ def index(request):
 def livestream_list(request):
     livestreams = Livestream.objects.all()
     current_time = datetime.now(pytz.utc)
+    livestream_additional_info = []
+
+    for livestream in livestreams:
+        livestream_additional_info.append(
+            {
+                "livestream": livestream,
+                "time_in_relation_to_sunrise": get_sunrise_time_relationship(livestream)
+            }
+        )
 
     return render(
         request,
         "alwayssunriseapp/livestream_list.html",
         {
-            "livestreams": livestreams,
+            "livestream_additional_info": livestream_additional_info,
             "current_time": current_time,
         },
     )
