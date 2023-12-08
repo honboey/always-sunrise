@@ -1,7 +1,8 @@
 from django.conf import settings
 from django.db import models
 from datetime import datetime, timedelta
-from .utils.api_retrievals import get_lat_and_long, get_timezone
+
+from .utils.api_retrievals import get_lat_and_long, get_sunrise_times, get_timezone
 
 # Create object
 
@@ -16,9 +17,9 @@ class Livestream(models.Model):
         max_digits=11, decimal_places=8, null=True, blank=True
     )
     timezone = models.CharField(max_length=200, null=True, blank=True)
-    sunrise_time_today = models.DateTimeField()
-    sunrise_time_tomorrow = models.DateTimeField()
-    weather = models.CharField(max_length=200)
+    sunrise_time_today = models.DateTimeField(blank=True)
+    sunrise_time_tomorrow = models.DateTimeField(blank=True)
+    weather = models.CharField(max_length=200, null=True, blank=True)
 
     class Meta:
         ordering = ["timezone"]
@@ -39,4 +40,13 @@ class Livestream(models.Model):
             self.timezone = get_timezone((self.latitude, self.longitude))
         except:
             self.timezone = "UTC"
+
+        # Call sunrise API
+        self.sunrise_time_today = get_sunrise_times(
+            "today", (self.latitude, self.longitude)
+        )
+        self.sunrise_time_tomorrow = get_sunrise_times(
+            "tomorrow", (self.latitude, self.longitude)
+        )
+
         super().save(*args, **kwargs)

@@ -1,6 +1,8 @@
 import googlemaps
 import os
-from datetime import datetime
+import requests
+import pytz
+from datetime import datetime, timedelta
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -32,3 +34,32 @@ def get_timezone(latlongtuple):
     except:
         print("There's an error")
     return timezone_result["timeZoneId"]
+
+
+def get_sunrise_times(day, latlongtuple):
+    """
+    Given the lat and long, retrieve sunrise times for the specified day.
+    """
+    response = requests.get(
+        f"https://api.sunrisesunset.io/json?lat={latlongtuple[0]}&lng={latlongtuple[1]}&date={day}"
+    )
+
+    # Convert received time to naive datetime.time object
+    sunrise_time = datetime.strptime(
+        response.json()["results"]["sunrise"], "%I:%M:%S %p"
+    ).time()
+
+    # Get timezone and convert to pytz.timezone object
+    local_timezone = pytz.timezone(response.json()["results"]["timezone"])
+
+    # Get day's date and convert to datetime.date
+    if day == "today":
+        date = datetime.now().date()
+    elif day == "tomorrow":
+        date = datetime.now().date() + timedelta(days=1)
+
+    # Combine time and date to create a naive datetime.datetime object
+    naive_sunrise_datetime = datetime.combine(date, sunrise_time)
+
+    # Convert to aware datetime.datetime object and save to model
+    return local_timezone.localize(naive_sunrise_datetime)
