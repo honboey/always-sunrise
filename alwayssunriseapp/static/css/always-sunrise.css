@@ -36,7 +36,7 @@ body {
 /* Type */
 
 h1 {
-  margin: 0 0 2rem 0;
+  margin: 0 0 1rem 0;
   font-size: 1.5rem;
   font-weight: 500;
 
@@ -45,10 +45,22 @@ h1 {
   }
 }
 
+@media screen and (min-width: 786px) {
+  h1 {
+    margin-bottom: 2rem;
+  }
+}
+
 h2 {
-  margin: 0 0 2rem 0;
+  margin: 0 0 0 0;
   font-size: 1.25rem;
   font-weight: 500;
+}
+
+@media screen and (min-width: 786px) {
+  h2 {
+    margin-bottom: 2rem;
+  }
 }
 
 p {
@@ -72,7 +84,15 @@ header {
 }
 
 .masthead {
-  grid-column: 1/13;
+  grid-column: 1/25;
+  margin-bottom: 3rem;
+}
+
+@media screen and (min-width: 786px) {
+  .masthead {
+    grid-column: 1/13;
+    margin-bottom: 0;
+  }
 }
 
 .logo {
@@ -82,9 +102,15 @@ header {
 
 .livestream-info__container {
   display: grid;
-  grid-column: 16/25;
+  grid-column: 1/25;
   grid-template-columns: subgrid;
   margin-bottom: 3rem;
+}
+
+@media screen and (min-width: 786px) {
+  .livestream-info__container {
+    grid-column: 16/25;
+  }
 }
 
 .livestream-location {
@@ -93,18 +119,36 @@ header {
 
 .livestream-info__definition-list {
   display: grid;
+  grid-column: 1/25;
   grid-template-columns: subgrid;
-  grid-column: 1/10;
   margin: 0 0 1rem 0;
 }
 
+@media screen and (min-width: 786px) {
+  .livestream-info__definition-list {
+    grid-column: 1/10;
+  }
+}
+
 .livestream-info__definition-term {
-  grid-column: 1/4;
+  grid-column: 1/12;
+}
+
+@media screen and (min-width: 786px) {
+  .livestream-info__definition-term {
+    grid-column: 1/4;
+  }
 }
 
 .livestream-info__definition-description {
-  grid-column: 5/10;
+  grid-column: 14/25;
   margin: 0;
+}
+
+@media screen and (min-width: 786px) {
+  .livestream-info__definition-description {
+    grid-column: 5/10;
+  }
 }
 
 .livestream-info__definition-description--mt-2,
@@ -113,7 +157,7 @@ header {
 }
 
 .change-location-button {
-  grid-column: 1/10;
+  grid-column: 1/25;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
   border: solid 1px var(--black);
@@ -121,6 +165,12 @@ header {
   text-decoration: none;
   background-color: transparent;
   cursor: pointer;
+}
+
+@media screen and (min-width: 786px) {
+  .change-location-button {
+    grid-column: 1/10;
+  }
 }
 
 .change-location-button:hover {
@@ -161,7 +211,13 @@ main {
 /* Footer */
 
 footer {
-  grid-column: 17/25;
+  grid-column: 2/25;
+}
+
+@media screen and (min-width: 786px) {
+  footer {
+    grid-column: 17/25;
+  }
 }
 
 .colophon__link-list {
