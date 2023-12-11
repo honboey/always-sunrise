@@ -105,6 +105,10 @@ def get_next_sunrise_livestream(livestream_queryset):
     )["livestream"]
     return selected_livestream
 
+def sort_livestreams_by_time(livestreams):
+    livestreams_list = list(Livestream.objects.all().order_by("sunrise_time_today"))
+    print(livestreams_list[0].sunrise_time_today)
+
 
 # Create your views here.
 

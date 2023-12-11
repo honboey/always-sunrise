@@ -175,6 +175,5 @@ class ViewSortingTests(TestCase):
 
     def test_sort_livestreams_by_time(self):
         sorted_livestreams = sort_livestreams_by_time(Livestream.objects.all())
-        print(sorted_livestreams)
         # self.assertQuerySetEqual([self.nyc, self.sydney, self.tokyo], sorted_livestreams)
         
