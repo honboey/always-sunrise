@@ -11,6 +11,7 @@ from ..views import (
     filter_future_sunrise_livestreams,
     get_next_sunrise_livestream,
     get_sunrise_time_relationship,
+    sort_livestreams_by_time,
 )
 
 # Create your tests here.
@@ -137,3 +138,43 @@ class IndexViewTests(TestCase):
     ):
         statement = get_sunrise_time_relationship(self.tokyo)
         self.assertEqual(statement, "1h 12mins till sunrise")
+
+
+class ViewSortingTests(TestCase):
+    def setUp(self):
+        # Setup Livestream objects
+        self.sydney = LivestreamFactory(
+            location="Sydney",
+            sunrise_time_today=datetime(
+                2023, 12, 7, 5, 30, 0, tzinfo=pytz.timezone("Australia/Sydney")
+            ),
+            sunrise_time_tomorrow=datetime(
+                2023, 12, 8, 5, 31, 0, tzinfo=pytz.timezone("Australia/Sydney")
+            ),
+        )
+
+        self.tokyo = LivestreamFactory(
+            location="Tokyo",
+            sunrise_time_today=datetime(
+                2023, 12, 7, 6, 30, 0, tzinfo=pytz.timezone("Asia/Tokyo")
+            ),
+            sunrise_time_tomorrow=datetime(
+                2023, 12, 8, 6, 31, 0, tzinfo=pytz.timezone("Asia/Tokyo")
+            ),
+        )
+
+        self.nyc = LivestreamFactory(
+            location="NYC",
+            sunrise_time_today=datetime(
+                2023, 12, 7, 7, 7, 0, tzinfo=pytz.timezone("America/New_York")
+            ),
+            sunrise_time_tomorrow=datetime(
+                2023, 12, 8, 7, 8, 0, tzinfo=pytz.timezone("America/New_York")
+            ),
+        )
+
+    def test_sort_livestreams_by_time(self):
+        sorted_livestreams = sort_livestreams_by_time(Livestream.objects.all())
+        print(sorted_livestreams)
+        # self.assertQuerySetEqual([self.nyc, self.sydney, self.tokyo], sorted_livestreams)
+        

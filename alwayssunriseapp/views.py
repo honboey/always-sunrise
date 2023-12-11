@@ -131,19 +131,34 @@ def index(request):
 
 
 def livestream_list(request):
-    livestreams = Livestream.objects.all().order_by("longitude")
+    livestreams = Livestream.objects.all().order_by("sunrise_time_today")
     current_time = datetime.now(pytz.utc)
+    filtered_livestreams = filter_future_sunrise_livestreams(livestreams)
+    current_livestream = get_next_sunrise_livestream(filtered_livestreams)
     livestream_additional_info = []
 
     for livestream in livestreams:
-        livestream_additional_info.append(
-            {
-                "livestream": livestream,
-                "time_in_relation_to_sunrise": get_sunrise_time_relationship(
-                    livestream
-                ),
-            }
-        )
+        if livestream == current_livestream:
+            livestream_additional_info.append(
+                {
+                    "livestream": livestream,
+                    "time_in_relation_to_sunrise": get_sunrise_time_relationship(
+                        livestream
+                    ),
+                    "current_livestream": True,
+                }
+            )
+        else:
+            livestream_additional_info.append(
+                {
+                    "livestream": livestream,
+                    "time_in_relation_to_sunrise": get_sunrise_time_relationship(
+                        livestream
+                    ),
+                }
+            )
+
+    print(livestream_additional_info)
 
     return render(
         request,
