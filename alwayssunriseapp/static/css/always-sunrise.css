@@ -52,7 +52,7 @@ h1 {
 }
 
 h2 {
-  margin: 0 0 0 0;
+  margin: 0 0 0.5rem 0;
   font-size: 1.25rem;
   font-weight: 500;
 }
@@ -114,7 +114,25 @@ header {
 }
 
 .livestream-location {
-  grid-column: 1/10;
+  grid-column: 1/13;
+}
+
+@media screen and (min-width: 786px) {
+  .livestream-location {
+    grid-column: 1/7;
+  }
+}
+
+.livestream-map {
+  display: block;
+  grid-column: 14/25;
+}
+
+@media screen and (min-width: 786px) {
+  .livestream-map {
+    grid-column: 8/10;
+    text-align: right;
+  }
 }
 
 .livestream-info__definition-list {
