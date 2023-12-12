@@ -8,10 +8,9 @@ from django.utils import timezone
 from ..models import Livestream
 from ..factories import LivestreamFactory
 from ..views import (
-    filter_future_sunrise_livestreams,
+    center_current_livestream_in_list,
     get_next_sunrise_livestream,
     get_sunrise_time_relationship,
-    sort_livestreams_by_time,
 )
 
 # Create your tests here.
@@ -49,36 +48,6 @@ class IndexViewTests(TestCase):
                 2023, 12, 8, 7, 8, 0, tzinfo=pytz.timezone("America/New_York")
             ),
         )
-
-    # filter_future_sunrise_livestreams()
-    @freeze_time("2023-12-6 17:15:00", tz_offset=0)
-    def test_filter_future_sunrise_livestreams__current_time_before_all_today_sunrise(
-        self,
-    ):
-        filtered_livestreams = filter_future_sunrise_livestreams(
-            Livestream.objects.all()
-        )
-        self.assertQuerysetEqual(
-            filtered_livestreams, [self.nyc, self.tokyo, self.sydney]
-        )
-
-    @freeze_time("2023-12-7 20:00:00", tz_offset=0)
-    def test_filter_future_sunrise_livestreams__current_time_between_sydney_and_tokyo_tomorrow_sunrise(
-        self,
-    ):
-        filtered_livestreams = filter_future_sunrise_livestreams(
-            Livestream.objects.all()
-        )
-        self.assertQuerysetEqual(filtered_livestreams, [self.nyc, self.tokyo])
-
-    @freeze_time("2023-12-8 20:00:00", tz_offset=0)
-    def test_filter_future_sunrise_livestreams__current_time_after_sydney_and_tokyo_tomorrow_sunrise(
-        self,
-    ):
-        filtered_livestreams = filter_future_sunrise_livestreams(
-            Livestream.objects.all()
-        )
-        self.assertQuerysetEqual(filtered_livestreams, [])
 
     # get_next_sunrise_livestream()
     @freeze_time("2023-12-6 17:15:00", tz_offset=0)
@@ -173,6 +142,44 @@ class ViewSortingTests(TestCase):
             ),
         )
 
-    def test_sort_livestreams_by_time(self):
-        sorted_livestreams = sort_livestreams_by_time(Livestream.objects.all())
-        # self.assertQuerySetEqual([self.nyc, self.sydney, self.tokyo], sorted_livestreams)
+        self.london = LivestreamFactory(
+            location="London",
+            sunrise_time_today=datetime(
+                2023, 12, 7, 8, 7, 0, tzinfo=pytz.timezone("America/New_York")
+            ),
+            sunrise_time_tomorrow=datetime(
+                2023, 12, 8, 8, 8, 0, tzinfo=pytz.timezone("America/New_York")
+            ),
+        )
+
+        self.istanbul = LivestreamFactory(
+            location="Istanbul",
+            sunrise_time_today=datetime(
+                2023, 12, 7, 8, 10, 0, tzinfo=pytz.timezone("America/New_York")
+            ),
+            sunrise_time_tomorrow=datetime(
+                2023, 12, 8, 8, 11, 0, tzinfo=pytz.timezone("America/New_York")
+            ),
+        )
+
+    def test_centre_upcoming_livestream_in_list__current_in_first_half(self):
+        livestreams = Livestream.objects.all()
+        current_livestream = self.sydney
+        sorted_livestreams = center_current_livestream_in_list(
+            livestreams, current_livestream
+        )
+        self.assertQuerySetEqual(
+            sorted_livestreams,
+            [self.london, self.nyc, self.sydney, self.tokyo, self.istanbul],
+        )
+
+    def test_centre_upcoming_livestream_in_list__current_in_second_half(self):
+        livestreams = Livestream.objects.all()
+        current_livestream = self.nyc
+        sorted_livestreams = center_current_livestream_in_list(
+            livestreams, current_livestream
+        )
+        self.assertQuerySetEqual(
+            sorted_livestreams,
+            [self.istanbul, self.london, self.nyc, self.sydney, self.tokyo],
+        )

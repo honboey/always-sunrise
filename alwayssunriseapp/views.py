@@ -1,8 +1,9 @@
+import math
+import pytz
+
 from django.shortcuts import render, get_object_or_404
 from .models import Livestream
 from datetime import datetime, timedelta
-
-import pytz
 
 # Common utility functions
 
@@ -54,17 +55,6 @@ def get_sunrise_time_relationship(livestream):
                 return f"{time_diff_str[0]}h {time_diff_str[1]}mins till sunrise"
 
 
-def filter_future_sunrise_livestreams(livestream_queryset):
-    """
-    Queryset -> Queryset
-    Given a queryset of livestream models remove all livestreams where the sunrise has already occurred.
-    """
-    future_sunrise_livestreams = livestream_queryset.filter(
-        sunrise_time_tomorrow__gt=datetime.now(pytz.timezone("UTC"))
-    )
-    return future_sunrise_livestreams
-
-
 def get_next_sunrise_livestream(livestream_queryset):
     """
     Queryset -> Livestream
@@ -72,6 +62,9 @@ def get_next_sunrise_livestream(livestream_queryset):
     """
     # Get the current time in UTC
     current_time = datetime.now(pytz.timezone("UTC"))
+    future_sunrise_livestreams = livestream_queryset.filter(
+        sunrise_time_tomorrow__gt=datetime.now(pytz.timezone("UTC"))
+    )
     time_differences = []
     """
     This will look like:
@@ -86,7 +79,7 @@ def get_next_sunrise_livestream(livestream_queryset):
         },
     ]
     """
-    for livestream in livestream_queryset:
+    for livestream in future_sunrise_livestreams:
         if livestream.sunrise_time_today > current_time:
             time_to_next_sunrise = livestream.sunrise_time_today - current_time
         else:
@@ -106,9 +99,32 @@ def get_next_sunrise_livestream(livestream_queryset):
     return selected_livestream
 
 
-def sort_livestreams_by_time(livestreams):
-    livestreams_list = list(Livestream.objects.all().order_by("sunrise_time_today"))
-    print(livestreams_list[0].sunrise_time_today)
+def center_current_livestream_in_list(livestreams, current_livestream):
+    """ "
+    Given a queryset of livestreams, sort them in a way where the current livestream is in the middle of the list
+    """
+    livestream_list = list(livestreams.order_by("sunrise_time_today"))
+    number_of_livestreams = len(livestream_list)
+    index_of_current_livestream = livestream_list.index(current_livestream)
+    if index_of_current_livestream + 1 == math.ceil(number_of_livestreams / 2):
+        sorted_livestreams = livestream_list
+        return sorted_livestreams
+    elif index_of_current_livestream + 1 < math.ceil(number_of_livestreams / 2):
+        list_tail = livestream_list[
+            -(
+                math.ceil(number_of_livestreams / 2) - (index_of_current_livestream + 1)
+            ) :
+        ]
+        list_head = livestream_list[: len(livestream_list) - len(list_tail)]
+        sorted_livestreams = list_tail + list_head
+        return sorted_livestreams
+    else:
+        list_tail = livestream_list[
+            : (index_of_current_livestream + 1) - math.ceil(number_of_livestreams / 2)
+        ]
+        list_head = livestream_list[-(len(livestream_list) - len(list_tail)) :]
+        sorted_livestreams = list_head + list_tail
+        return sorted_livestreams
 
 
 # Create your views here.
@@ -119,8 +135,7 @@ def index(request):
     current_time = datetime.now(pytz.utc)
 
     # Get correct livestream
-    filtered_livestreams = filter_future_sunrise_livestreams(livestreams)
-    upcoming_livestream = get_next_sunrise_livestream(filtered_livestreams)
+    upcoming_livestream = get_next_sunrise_livestream(livestreams)
 
     # Create string of time difference
     time_in_relation_to_sunrise = get_sunrise_time_relationship(upcoming_livestream)
@@ -136,13 +151,16 @@ def index(request):
 
 
 def livestream_list(request):
-    livestreams = Livestream.objects.all().order_by("sunrise_time_today")
+    livestreams = Livestream.objects.all()
+    current_livestream = get_next_sunrise_livestream(livestreams)
+    sorted_livestreams = center_current_livestream_in_list(
+        livestreams, current_livestream
+    )
+
     current_time = datetime.now(pytz.utc)
-    filtered_livestreams = filter_future_sunrise_livestreams(livestreams)
-    current_livestream = get_next_sunrise_livestream(filtered_livestreams)
     livestream_additional_info = []
 
-    for livestream in livestreams:
+    for livestream in sorted_livestreams:
         if livestream == current_livestream:
             livestream_additional_info.append(
                 {
@@ -162,8 +180,6 @@ def livestream_list(request):
                     ),
                 }
             )
-
-    print(livestream_additional_info)
 
     return render(
         request,
