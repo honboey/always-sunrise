@@ -3,7 +3,6 @@
 
 
 {% block main %}
-  
   <h2 class="livestream-location">Browse the livestreams</h2>
   <table class="livestream-listings__table">
     <thead class="livestream-listings__table-head">
@@ -15,7 +14,7 @@
     </thead>
     <tbody>
       {% for livestream in livestream_additional_info %}
-        <tr {% if livestream.current_livestream %}style="background-color: #EDB800;"{% endif %}>
+        <tr {% if livestream.current_livestream %}id="current-livestream" style="background-color: #EDB800;"{% endif %}>
           <td class="livestream-listings__table-cell"><a href="{% url 'single_livestream' pk=livestream.livestream.pk %}">{{ livestream.livestream }}</a></td>
           <td class="livestream-listings__table-cell livestream-listings__table-cell--text-right">{% timezone livestream.livestream.timezone %}{{ livestream.livestream.sunrise_time_today|time }}{% endtimezone %}</td>
           <td class="livestream-listings__table-cell livestream-listings__table-cell--text-right">
@@ -27,3 +26,16 @@
     </tbody>
   </table>
 {% endblock main %}
+
+{% block page-js %}
+  <script>
+    window.onload = function() {
+      console.log("hello")
+      currentLivestream = document.getElementById("current-livestream")
+      currentLivestream.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      })
+    }
+  </script>
+{% endblock page-js %}
