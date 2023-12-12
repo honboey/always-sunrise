@@ -208,6 +208,12 @@ main {
 .livestream-listings__table-cell--text-right {
   text-align: right;
 }
+
+.livestream-listings__table-row--current-livestream {
+  background-image: linear-gradient(to right, #fffbcc, #dda4ca, #ffd864)
+}
+
+
 /* Footer */
 
 footer {

@@ -14,7 +14,7 @@
     </thead>
     <tbody>
       {% for livestream in livestream_additional_info %}
-        <tr {% if livestream.current_livestream %}id="current-livestream" style="background-color: #EDB800;"{% endif %}>
+        <tr {% if livestream.current_livestream %}id="current-livestream" class="livestream-listings__table-row--current-livestream"{% endif %}>
           <td class="livestream-listings__table-cell"><a href="{% url 'single_livestream' pk=livestream.livestream.pk %}">{{ livestream.livestream }}</a></td>
           <td class="livestream-listings__table-cell livestream-listings__table-cell--text-right">{% timezone livestream.livestream.timezone %}{{ livestream.livestream.sunrise_time_today|time }}{% endtimezone %}</td>
           <td class="livestream-listings__table-cell livestream-listings__table-cell--text-right">
