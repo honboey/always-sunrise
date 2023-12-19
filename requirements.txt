@@ -4,6 +4,8 @@ certifi==2023.11.17
 charset-normalizer==3.3.2
 click==8.1.7
 Django==4.2.7
+factory-boy==3.3.0
+Faker==21.0.0
 freezegun==1.2.2
 googlemaps==4.10.0
 idna==3.6

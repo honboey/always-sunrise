@@ -16,8 +16,8 @@
     <dt class="livestream-info__definition-term livestream-info__definition-term--mt-2">Local time</dt>
     <dd class="livestream-info__definition-description livestream-info__definition-description--mt-2">{% timezone livestream.timezone %}{{ current_time|time }}{% endtimezone %}<br>
     ({{ time_in_relation_to_sunrise }})</dd>
-    <!-- <dt class="livestream-info__definition-term livestream-info__definition-term--mt-2">Weather</dt>
-    <dd class="livestream-info__definition-description livestream-info__definition-description--mt-2">{{ livestream.weather }}</dd> -->
+    <dt class="livestream-info__definition-term livestream-info__definition-term--mt-2">Current weather</dt>
+    <dd class="livestream-info__definition-description livestream-info__definition-description--mt-2">{{ weather.current.temp_c }}°C / {{ weather.current.temp_f }}°F <img src="https:{{ weather.current.condition.icon }}" class="livestream-info__weather-icon" alt="{{ weather.current.condition.text }}"></dd>
   </dl>
   <a href="{% url 'livestream_list' %}" class="change-location-button">Change location</a>
 </div>

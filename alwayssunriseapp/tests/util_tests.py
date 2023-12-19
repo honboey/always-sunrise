@@ -1,9 +1,8 @@
-import datetime
+from datetime import datetime
 import pytz
 
 from django.test import TestCase
 from ..utils.api_retrievals import get_lat_and_long, get_timezone, get_sunrise_times
-
 
 class UtilTests(TestCase):
     # Test geocode API

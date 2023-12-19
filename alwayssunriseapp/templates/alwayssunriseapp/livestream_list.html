@@ -10,6 +10,7 @@
         <td class="livestream-listings__table-cell">Location</td>
         <td class="livestream-listings__table-cell livestream-listings__table-cell--text-right">Sunrise time</td>
         <td class="livestream-listings__table-cell livestream-listings__table-cell--text-right">Current time</td>
+        <td class="livestream-listings__table-cell livestream-listings__table-cell--text-center">Current visibility</td>
       </tr>
     </thead>
     <tbody>
@@ -21,6 +22,9 @@
             {% timezone livestream.livestream.timezone %}{{ current_time|time }}{% endtimezone %}
             ({{ livestream.time_in_relation_to_sunrise }})
           </td>
+          <td class="livestream-listings__table-cell livestream-listings__table-cell--text-center">
+            <img src="https:{{ livestream.weather.current.condition.icon }}" class="livestream-listings__weather-icon" alt="{{ livestream.weather.current.condition.text }}">
+          </td>
         </tr>
       {% endfor %}
     </tbody>
@@ -30,7 +34,6 @@
 {% block page-js %}
   <script>
     window.onload = function() {
-      console.log("hello")
       currentLivestream = document.getElementById("current-livestream")
       currentLivestream.scrollIntoView({
         behavior: "smooth",

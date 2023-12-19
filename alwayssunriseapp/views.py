@@ -2,6 +2,8 @@ import math
 import pytz
 
 from django.shortcuts import render, get_object_or_404
+
+from alwayssunriseapp.utils.api_retrievals import get_weather
 from .models import Livestream
 from datetime import datetime, timedelta
 
@@ -139,6 +141,10 @@ def index(request):
 
     # Create string of time difference
     time_in_relation_to_sunrise = get_sunrise_time_relationship(upcoming_livestream)
+
+    # Get weather
+    weather = get_weather(upcoming_livestream)
+
     return render(
         request,
         "alwayssunriseapp/index.html",
@@ -146,9 +152,12 @@ def index(request):
             "livestream": upcoming_livestream,
             "current_time": current_time,
             "time_in_relation_to_sunrise": time_in_relation_to_sunrise,
+            "weather": weather
         },
     )
 
+    # Get current weather for livestream
+    # weather = get_weather(upcoming_livestream)
 
 def livestream_list(request):
     livestreams = Livestream.objects.all()
@@ -168,6 +177,7 @@ def livestream_list(request):
                     "time_in_relation_to_sunrise": get_sunrise_time_relationship(
                         livestream
                     ),
+                    "weather": get_weather(livestream),
                     "current_livestream": True,
                 }
             )
@@ -178,6 +188,7 @@ def livestream_list(request):
                     "time_in_relation_to_sunrise": get_sunrise_time_relationship(
                         livestream
                     ),
+                    "weather": get_weather(livestream),
                 }
             )
 
@@ -197,6 +208,8 @@ def single_livestream(request, pk):
 
     time_in_relation_to_sunrise = get_sunrise_time_relationship(livestream)
 
+    weather = get_weather(livestream)
+
     return render(
         request,
         "alwayssunriseapp/single_livestream.html",
@@ -204,5 +217,6 @@ def single_livestream(request, pk):
             "livestream": livestream,
             "current_time": current_time,
             "time_in_relation_to_sunrise": time_in_relation_to_sunrise,
+            "weather": weather,
         },
     )

@@ -159,6 +159,7 @@ header {
 }
 
 .livestream-info__definition-description {
+  position: relative;
   grid-column: 14/25;
   margin: 0;
 }
@@ -172,6 +173,14 @@ header {
 .livestream-info__definition-description--mt-2,
 .livestream-info__definition-term--mt-2 {
   margin-top: 0.25rem;
+}
+
+.livestream-info__weather-icon {
+  position: absolute;
+  top: -5px;
+  max-height: 33px;
+  margin-left: 5px;
+  filter: grayscale(100%);
 }
 
 .change-location-button {
@@ -219,6 +228,7 @@ main {
 }
 
 .livestream-listings__table-cell {
+  position: relative;
   padding: 1rem 2rem 1rem 0;
   border-bottom: solid black 0.5px;
 }
@@ -227,8 +237,19 @@ main {
   text-align: right;
 }
 
+.livestream-listings__table-cell--text-center {
+  text-align: center;
+}
+
 .livestream-listings__table-row--current-livestream {
   background-image: linear-gradient(to right, #fffbcc, #dda4ca, #ffd864)
+}
+
+.livestream-listings__weather-icon {
+  position: absolute;
+  top: 10px;
+  max-height: 33px;
+  filter: grayscale(100%);
 }
 
 
