@@ -1,6 +1,6 @@
 # Always Sunrise
 
-Always Sunrise is a Django web app that determines where a sunrise is occuring and plays the closest livestream to that location. It can be found at [hon.pythonanywhere.com](http://hon.pythonanywhere.com/).
+Always Sunrise is a Django web app that determines where a sunrise is occuring and plays the closest livestream to that location. It can be found at [always-sunrise.com](http://www.always-sunrise.com/).
 
 ## Running the project
 
@@ -15,9 +15,9 @@ GOOGLE_MAPS_API_KEY=<your_key>
 
 ### How it works
 
-When an livestream object is created, the admin inputs its location and livestream YouTube ID. On save, two API calls are made:
-1. The first is to the Google Geocode API which uses its location to returns its latitude and longitude.
-2. The second is to the SunriseSunset API which sends the aforementioned lat and long and requests the sunrise time for today.
+Admins input a list of livestream links from around the world. When a livestream object is created, two API calls are made:
+1. The first is to the Google Geocode API which uses its location to return the livestream's exact latitude and longitude.
+2. The second is to the SunriseSunset API which sends the aforementioned lat and long and requests the times of the most recent and upcoming sunrise times.
 
 These are then saved to the database.
 
@@ -25,7 +25,7 @@ When a user visits the site, the server decides which livestream to show. This i
 1. Only show a livestream where the sunrise is in the future
 2. Only show a livestream where the time to sunrise is the shortest
 
-Because sunrise times change everyday, a daily call is made to the SunriseSunset API to update all livestream's sunrise times. This occurs at 1:19am (UTC).
+Because sunrise times change everyday, a daily call is made to the SunriseSunset API to update all livestreams' sunrise times. This occurs at 1:19am (UTC).
 
 ## Servers
 
