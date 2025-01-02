@@ -29,7 +29,7 @@ Because sunrise times change everyday, a daily call is made to the SunriseSunset
 
 ## Servers
 
-Always Sunrise is hosted by PythonAnywhere. To run commands on the PythonAnywhere server you will need to open a Bash console in the virtual environment. To do so, in the PythonAnywhere dashboard, go to "Web apps" and click on "Start a console in this virtualenv".
+Always Sunrise ~~is~~ was hosted by PythonAnywhere. To run commands on the PythonAnywhere server you will need to open a Bash console in the virtual environment. To do so, in the PythonAnywhere dashboard, go to "Web apps" and click on "Start a console in this virtualenv".
 
 ### Useful Commands
 • Retrieve sunrise times and add them to your objects:
